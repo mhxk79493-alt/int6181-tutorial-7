@@ -1,0 +1,36 @@
+name: Run Tests
+
+# Run the test suite automatically on every pull request (and on pushes to main),
+# so a broken change is caught by CI before it is merged.
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+# Least privilege: the workflow only needs to read the repository.
+permissions:
+  contents: read
+
+# If a PR gets several pushes, cancel the outdated runs instead of queueing them.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: CheckOut Your Code
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run teacher tests
+        run: python -m unittest discover -v

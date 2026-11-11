@@ -34,7 +34,7 @@ class Triangle:
             return False
 
         # Triangle Inequality Theorem Check
-        if (self.a + self.b <= self.c) or (self.a + self.c <= self.b) or (self.b + self.c <= self.a):
+        if (self.a + self.b < self.c) or (self.a + self.c < self.b) or (self.b + self.c < self.a):
             print("The sum of any two sides must be strictly greater than the third side.")
             return False
 
